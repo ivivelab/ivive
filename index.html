@@ -217,35 +217,53 @@ p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
     <p class="reveal">breathing life into intelligence.<br>(ai + alive)</p>
   </section>
 
-  <section id="about" data-bg="img/about-bg.webp">
+  <section id="about" data-bg="img/about-bg.png">
     <h1 class="reveal">humanity x ai</h1>
     <p class="reveal">designing values beyond technology.</p>
     <div class="view-more-btn reveal" onclick="toggleOverlay('about-layer', true)">our philosophy →</div>
   </section>
 
-  <section id="services" data-bg="img/services-bg.webp">
+  <section id="services" data-bg="img/services-bg.png">
     <h1 class="reveal">solutions</h1>
     <p class="reveal">redefining the future of business.</p>
     <div class="view-more-btn reveal" onclick="toggleOverlay('services-layer', true)">view services →</div>
   </section>
 
-  <section id="portfolio" data-bg="img/portfolio-bg.webp">
+  <section id="portfolio" data-bg="img/portfolio-bg.png">
     <h1 class="reveal">evidence</h1>
     <p class="reveal">records of innovation proven by results.</p>
     <div class="view-more-btn reveal" onclick="toggleOverlay('portfolio-layer', true)">view projects →</div>
   </section>
 
-  <section id="prompts" data-bg="img/prompts-bg.webp">
+  <section id="prompts" data-bg="img/prompts-bg.png">
     <h1 class="reveal">ivive lab</h1>
     <p class="reveal">the most sophisticated way to talk with ai.</p>
     <div class="view-more-btn reveal" onclick="toggleOverlay('prompts-layer', true)">view prompts →</div>
   </section>
 
-   <section id="contact" data-bg="img/connect-bg.webp">
+<section id="contact" data-bg="img/connect-bg.png" style="display: flex; flex-direction: column; justify-content: space-between; padding: 15vh 5% 5vh; text-align: center;">
+  
+  <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
     <h1 class="reveal">connect</h1>
     <p class="reveal">ready to bring new vitality to your vision?<br>join our partnership for the next evolution.</p>
-    <div class="view-more-btn reveal" onclick="toggleOverlay('contact-layer', true)">view contact →</div>
-  </section>
+    
+    <div class="view-more-btn reveal" onclick="toggleOverlay('contact-layer', true)" style="display: inline-block; width: auto; margin: 0 auto;">
+      view contact →
+    </div>
+  </div>
+
+  <div class="reveal" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; color: rgba(255,255,255,0.3); font-size: 10px; line-height: 1.6;">
+    <div style="display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: center; margin-bottom: 5px;">
+      <span>COMPANY. ivive</span>
+      <span>LICENSE. 455-58-00818</span>
+      <span>CEO. Lee Gwang Hyeon</span>
+      <span>MAIL. ivive.lab@gmail.com</span>
+    </div>
+    <p>© 2026 ivive. All rights reserved. Designed for the Next Intelligence.</p>
+  </div>
+  
+</section>
+
 </div>
 
 <div id="about-layer" class="overlay">
@@ -647,7 +665,7 @@ p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
       </div>
   
   </div>
-</div>
+ </div>
 
 <script>
 // [1] 섹션 감지 및 배경 변경 (Scroll Observer)
@@ -766,4 +784,3 @@ function showBlogList() {
 </script>
 </body>
 </html>
-
