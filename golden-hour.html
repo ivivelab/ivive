@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golden Hour 가사 암기</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Apple SD Gothic Neo', Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #fecfef 100%);
+            display: flex; justify-content: center; align-items: center;
+            min-height: 100vh; padding: 1rem;
+        }
+        .card {
+            background: white; padding: 2rem; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            text-align: center; width: 100%; max-width: 520px;
+        }
+        h3 { color: #ff777b; font-size: 1.2rem; margin-bottom: 0.3rem; }
+        .subtitle { color: #aaa; font-size: 0.8rem; margin-bottom: 1.2rem; }
+
+        .progress-wrap { background: #f0f0f0; border-radius: 99px; height: 7px; margin-bottom: 0.4rem; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #ff9a9e, #fecfef); border-radius: 99px; transition: width 0.4s; }
+        .progress-text { font-size: 0.75rem; color: #bbb; margin-bottom: 1.2rem; }
+
+        .section-badge {
+            display: inline-block; background: #fff0f3; color: #ff777b;
+            font-size: 0.72rem; font-weight: bold; padding: 3px 12px;
+            border-radius: 99px; border: 1px solid #ffc0cb; margin-bottom: 0.9rem;
+        }
+
+        .lyrics-box {
+            background: #fff8f8; border: 2px dashed #ffc0cb;
+            border-radius: 14px; padding: 1.4rem;
+            font-size: 1.4rem; font-weight: bold; color: #333;
+            min-height: 80px; display: flex; align-items: center;
+            justify-content: center; margin-bottom: 1.2rem;
+            line-height: 1.6;
+        }
+
+        input {
+            width: 100%; padding: 0.9rem 1rem;
+            border: 2px solid #eee; border-radius: 10px;
+            font-size: 1rem; margin-bottom: 0.5rem; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: #ff9a9e; box-shadow: 0 0 8px rgba(255,154,158,0.3); }
+        .hint-text { font-size: 0.75rem; color: #ccc; margin-bottom: 1rem; }
+
+        .btn-row { display: flex; gap: 8px; }
+        button {
+            flex: 1; padding: 0.85rem; border: none; border-radius: 10px;
+            font-size: 0.95rem; cursor: pointer; font-weight: bold; color: white; transition: 0.2s;
+        }
+        .btn-check { background: #ff9a9e; }
+        .btn-check:hover { background: #ff777b; }
+        .btn-next  { background: #a78bfa; }
+        .btn-next:hover  { background: #7c3aed; }
+        .btn-skip  { background: #d1d5db; }
+        .btn-skip:hover  { background: #9ca3af; }
+
+        #feedback { margin-top: 1.1rem; font-size: 1rem; min-height: 1.8rem; line-height: 1.6; font-weight: bold; }
+        .correct { color: #4CAF50; }
+        .wrong   { color: #f44336; }
+
+        .score-row { display: flex; justify-content: center; gap: 10px; margin-top: 0.9rem; }
+        .badge {
+            background: #fff0f3; border: 1px solid #ffc0cb; color: #ff777b;
+            font-size: 0.75rem; padding: 3px 12px; border-radius: 99px;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h3>✨ Golden Hour Study ✨</h3>
+    <div class="subtitle">JVKE — Golden Hour 🎵 한국어 보고 영어로!</div>
+
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+
+    <div class="section-badge" id="sectionBadge">섹션</div>
+
+    <div class="lyrics-box" id="lyricsText">로딩 중...</div>
+
+    <input type="text" id="userInput" placeholder="영어 가사를 입력하고 Enter 🎤" autocomplete="off">
+    <div class="hint-text">대소문자 · 마침표 상관없어! 🎵</div>
+
+    <div class="btn-row">
+        <button class="btn-check" id="checkBtn" onclick="checkAnswer()">확인 ✓</button>
+        <button class="btn-next"  id="nextBtn"  onclick="nextQuiz()" style="display:none">다음 →</button>
+        <button class="btn-skip"  onclick="skipQuiz()">건너뛰기</button>
+    </div>
+
+    <div id="feedback"></div>
+
+    <div class="score-row">
+        <div class="badge" id="scoreBadge">맞은 것: 0개</div>
+        <div class="badge" id="totalBadge">진행: 0문제</div>
+    </div>
+</div>
+
+<script>
+const lyrics = [
+    // Verse 1
+    { section: "Verse 1",      kor: "그저 두 연인이었지",                      eng: "it was just two lovers" },
+    { section: "Verse 1",      kor: "차에 앉아 있었어",                        eng: "sittin' in the car" },
+    { section: "Verse 1",      kor: "Blonde 앨범을 들으며",                    eng: "listening to blonde" },
+    { section: "Verse 1",      kor: "서로에게 빠져들고 있었지",                eng: "fallin' for each other" },
+    { section: "Verse 1",      kor: "분홍색과 주황색 하늘",                    eng: "pink and orange skies" },
+    { section: "Verse 1",      kor: "완전 어린아이 같은 기분이야",             eng: "feelin' super childish" },
+    { section: "Verse 1",      kor: "도널드 글로버도 없이",                    eng: "no donald glover" },
+    { section: "Verse 1",      kor: "엄마한테 온 부재중 전화",                 eng: "missed call from my mother" },
+    { section: "Verse 1",      kor: "오늘 밤 어디 있어?",                      eng: "like where you at tonight" },
+    { section: "Verse 1",      kor: "알리바이도 없어",                         eng: "got no alibi" },
+
+    // Pre-Chorus
+    { section: "Pre-Chorus",   kor: "내 인생의 사랑과 단둘이 있었어",          eng: "i was all alone with the love of my life" },
+    { section: "Pre-Chorus",   kor: "그녀의 피부는 반짝거려",                  eng: "she's got glitter for skin" },
+    { section: "Pre-Chorus",   kor: "어둠 속 나의 빛나는 빛",                  eng: "my radiant beam in the night" },
+    { section: "Pre-Chorus",   kor: "네가 빛나는 걸 보는 데 빛은 필요 없어",   eng: "i don't need no light to see you shine" },
+
+    // Chorus
+    { section: "Chorus",       kor: "지금이 당신의 황금 시간이에요",           eng: "it's your golden hour" },
+    { section: "Chorus",       kor: "당신은 시간을 느리게 만들어요",           eng: "you slow down time" },
+    { section: "Chorus",       kor: "당신의 황금 시간 속에서",                 eng: "in your golden hour" },
+
+    // Verse 2
+    { section: "Verse 2",      kor: "우리는 그저 두 연인이었어",               eng: "we were just two lovers" },
+    { section: "Verse 2",      kor: "대시보드에 발을 올리고",                  eng: "feet up on the dash" },
+    { section: "Verse 2",      kor: "빠르게 어딘지도 모르는 곳으로 달리며",    eng: "drivin' nowhere fast" },
+    { section: "Verse 2",      kor: "여름을 불태우며",                         eng: "burnin' through the summer" },
+    { section: "Verse 2",      kor: "라디오를 최대 볼륨으로 틀어놓고",         eng: "radio on blast" },
+    { section: "Verse 2",      kor: "이 순간을 계속 이어가며",                 eng: "make the moment last" },
+    { section: "Verse 2",      kor: "그녀는 태양 에너지를 가졌어",             eng: "she got solar power" },
+    { section: "Verse 2",      kor: "몇 분이 몇 시간처럼 느껴져",              eng: "minutes feel like hours" },
+    { section: "Verse 2",      kor: "그녀는 자신이 최고인 걸 알았어",          eng: "she knew she was the baddest" },
+    { section: "Verse 2",      kor: "상상이나 할 수 있어?",                    eng: "can you even imagine" },
+    { section: "Verse 2",      kor: "내가 그랬던 것처럼 빠져드는 걸?",         eng: "fallin' like i did" },
+
+    // Pre-Chorus 2
+    { section: "Pre-Chorus 2", kor: "내 인생의 사랑을 위해",                   eng: "for the love of my life" },
+    { section: "Pre-Chorus 2", kor: "그녀의 얼굴에서 빛이 나",                 eng: "she's got glow on her face" },
+    { section: "Pre-Chorus 2", kor: "눈빛이 눈부시게 빛나",                    eng: "a glorious look in her eyes" },
+    { section: "Pre-Chorus 2", kor: "나의 빛의 천사",                          eng: "my angel of light" },
+];
+
+let quizList = [];
+let currentIdx = 0;
+let correctCount = 0;
+let totalAnswered = 0;
+
+function normalize(str) {
+    return str.toLowerCase().replace(/[^a-z0-9\s']/g, '').replace(/\s+/g, ' ').trim();
+}
+
+function initQuiz() {
+    quizList = [...lyrics];
+    currentIdx = 0;
+    correctCount = 0;
+    totalAnswered = 0;
+}
+
+function nextQuiz() {
+    if (currentIdx >= quizList.length) {
+        alert(`🎉 전곡 완료! 정답: ${correctCount} / ${totalAnswered}\n다시 섞어서 시작할게!`);
+        initQuiz();
+    }
+    const q = quizList[currentIdx];
+    document.getElementById('sectionBadge').innerText = q.section;
+    document.getElementById('lyricsText').innerText   = q.kor;
+    document.getElementById('userInput').value        = "";
+    document.getElementById('feedback').innerText     = "";
+    document.getElementById('userInput').focus();
+    document.getElementById('checkBtn').style.display = "block";
+    document.getElementById('nextBtn').style.display  = "none";
+    updateUI();
+}
+
+function checkAnswer() {
+    const userVal    = normalize(document.getElementById('userInput').value);
+    const correctVal = normalize(quizList[currentIdx].eng);
+    const feedback   = document.getElementById('feedback');
+    totalAnswered++;
+
+    if (userVal === correctVal) {
+        feedback.innerHTML = `✅ 정답! 🎵`;
+        feedback.className = "correct";
+        correctCount++;
+        currentIdx++;
+        document.getElementById('checkBtn').style.display = "none";
+        document.getElementById('nextBtn').style.display  = "block";
+    } else {
+        feedback.innerHTML = `❌ 아쉬워!<br>정답: <strong>${quizList[currentIdx].eng}</strong>`;
+        feedback.className = "wrong";
+    }
+    updateUI();
+}
+
+function skipQuiz() {
+    document.getElementById('feedback').innerHTML = `⏭️ 건너뜀!<br>정답: <strong>${quizList[currentIdx].eng}</strong>`;
+    document.getElementById('feedback').className = "wrong";
+    totalAnswered++;
+    currentIdx++;
+    document.getElementById('checkBtn').style.display = "none";
+    document.getElementById('nextBtn').style.display  = "block";
+    updateUI();
+}
+
+function updateUI() {
+    const total = quizList.length;
+    const pct   = Math.round((currentIdx / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').innerText  = `${currentIdx} / ${total}`;
+    document.getElementById('scoreBadge').innerText    = `맞은 것: ${correctCount}개`;
+    document.getElementById('totalBadge').innerText    = `진행: ${totalAnswered}문제`;
+}
+
+document.getElementById('userInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        if (document.getElementById('checkBtn').style.display !== 'none') {
+            checkAnswer();
+        } else {
+            nextQuiz();
+        }
+    }
+});
+
+initQuiz();
+nextQuiz();
+</script>
+</body>
+</html>
