@@ -24,7 +24,7 @@
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: auto; }
 body { 
     height: 100%; width: 100%; 
     overflow: hidden; background: #000; 
@@ -54,8 +54,7 @@ nav ul li a:hover, nav ul li a.active { opacity: 1; color: var(--accent); }
 
 #bg-fixed {
     position: fixed; inset: 0; z-index: -2;
-    background-size: cover; background-position: center;
-    transition: background-image var(--speed) ease-in-out;
+    background-color: #000;
 }
 .snap {
     height: 100vh; width: 100vw;
@@ -166,6 +165,14 @@ p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
     margin-top: 30px;
 }
 
+.bg-layer {
+    position: absolute; inset: 0;
+    background-size: cover; background-position: center;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out; /* background-image 대신 opacity 사용 */
+}
+.bg-layer.active { opacity: 1; }
+    
 @media (max-width: 768px) {
     .archive-grid-fixed {
         grid-template-columns: repeat(3, 1fr); 
@@ -668,118 +675,147 @@ p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
  </div>
 
 <script>
-// [1] 섹션 감지 및 배경 변경 (Scroll Observer)
-const bgFixed = document.getElementById("bg-fixed");
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".nav-link");
+/**
+ * [1] 섹션 감지 및 인터랙션 (Unified Observer)
+ * 배경 이미지 변경, 섹션 활성화, 네비게이션 동기화를 한 번에 처리합니다.
+ */
+const observerOptions = {
+    threshold: 0.6 // 섹션이 60% 이상 보일 때 전환
+};
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      sections.forEach(s => s.classList.remove("active"));
-      entry.target.classList.add("active");
-      const bgPath = entry.target.getAttribute('data-bg');
-      if (bgPath) bgFixed.style.backgroundImage = `url('${bgPath}')`;
-      const id = entry.target.getAttribute("id");
-      navLinks.forEach(link => {
-        link.classList.remove("active");
-        if (link.getAttribute("href") === `#${id}`) link.classList.add("active");
-      });
-    }
-  });
-}, { threshold: 0.6 });
-sections.forEach(s => observer.observe(s));
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const target = entry.target;
+            const bgUrl = target.getAttribute('data-bg');
+            const id = target.getAttribute("id");
 
-// [2] 레이어 열고 닫기 (Overlay Control)
+            // 1. 배경 이미지 변경 (이미지가 있을 때만)
+            if (bgUrl) {
+                document.getElementById('bg-fixed').style.backgroundImage = `url('${bgUrl}')`;
+            }
+
+            // 2. 섹션 active 클래스 관리
+            document.querySelectorAll('section').forEach(s => s.classList.remove("active"));
+            target.classList.add('active');
+
+            // 3. 네비게이션 링크 활성화 상태 동기화
+            document.querySelectorAll(".nav-link").forEach(link => {
+                link.classList.remove("active");
+                if (link.getAttribute("href") === `#${id}`) {
+                    link.classList.add("active");
+                }
+            });
+        }
+    });
+}, observerOptions);
+
+// 모든 섹션 관찰 시작
+document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+});
+
+/**
+ * [2] 레이어 제어 (Overlay Control)
+ * 각 레이어를 열고 닫으며 본문 스크롤을 제어합니다.
+ */
 function toggleOverlay(layerId, open) {
-  const layer = document.getElementById(layerId);
-  if (!layer) return;
-  
-  if (open) {
-    layer.classList.add("open");
-    document.body.classList.add("stop-scroll");
-  } else {
-    layer.classList.remove("open");
-    document.body.classList.remove("stop-scroll");
-    if(layerId === 'blog-layer') {
-      setTimeout(showBlogList, 300); // 닫힐 때 리스트 뷰로 리셋
+    const layer = document.getElementById(layerId);
+    if (!layer) return;
+
+    if (open) {
+        layer.classList.add("open");
+        document.body.classList.add("stop-scroll");
+    } else {
+        layer.classList.remove("open");
+        document.body.classList.remove("stop-scroll");
+        // 블로그 레이어를 닫을 때는 리스트 뷰로 초기화
+        if (layerId === 'blog-layer') {
+            setTimeout(showBlogList, 300);
+        }
     }
-  }
 }
 
-// [3] 블로그 포스트 보기 (The Heart of Content)
+/**
+ * [3] 블로그 포스트 상세 보기 (Content Switcher)
+ * Switch 문을 활용해 효율적으로 콘텐츠를 교체합니다.
+ */
 function showPost(postId) {
-  const listView = document.getElementById('blog-list-view');
-  const detailView = document.getElementById('blog-detail-view');
-  const contentArea = document.getElementById('post-content');
+    const listView = document.getElementById('blog-list-view');
+    const detailView = document.getElementById('blog-detail-view');
+    const contentArea = document.getElementById('post-content');
+    const layer = document.getElementById('blog-layer');
 
-  // 레이아웃 전환
-  listView.style.display = 'none';
-  detailView.style.display = 'block';
-  document.getElementById('blog-layer').scrollTop = 0;
+    listView.style.display = 'none';
+    detailView.style.display = 'block';
+    if (layer) layer.scrollTop = 0;
 
-  let content = "";
+    let content = "";
 
-  // Switch 문으로 깔끔하게 정리 (No redundant IF statements!)
-  switch(postId) {
-    case 'post1':
-      content = `
-        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Insight / Strategy</p>
-        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">Why Architects Matter</h1>
-        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-01.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
-        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
-          <p style="margin-bottom: 30px;">In an era where AI generates code in seconds, the role of a 'Developer' is evolving. We are no longer just typists; we are <strong>Architects of Value</strong>. 20 years of experience has taught me that code is temporary, but structure is permanent.</p>
-          <blockquote style="border-left: 3px solid var(--accent); padding-left: 30px; margin: 60px 0; font-style: italic; color: #fff; font-size: 1.5rem; background: rgba(255,255,255,0.05); padding: 40px;">"The best way to predict the future is to architect it."</blockquote>
-          <p>Strategic design is about deciding what NOT to build. This ensures efficiency and long-term sustainability for your business.</p>
-        </div>`;
-      break;
+    switch (postId) {
+        case 'post1':
+            content = `
+                <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Insight / Strategy</p>
+                <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">Why Architects Matter</h1>
+                <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-01.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+                <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+                    <p style="margin-bottom: 30px;">In an era where AI generates code in seconds, the role of a 'Developer' is evolving. We are no longer just typists; we are <strong>Architects of Value</strong>. 20 years of experience has taught me that code is temporary, but structure is permanent.</p>
+                    <blockquote style="border-left: 3px solid var(--accent); padding-left: 30px; margin: 60px 0; font-style: italic; color: #fff; font-size: 1.5rem; background: rgba(255,255,255,0.05); padding: 40px;">"The best way to predict the future is to architect it."</blockquote>
+                    <p>Strategic design is about deciding what NOT to build. This ensures efficiency and long-term sustainability for your business.</p>
+                </div>`;
+            break;
 
-    case 'post2':
-      content = `
-        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Automation / Efficiency</p>
-        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">Solo Business Automation</h1>
-        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-02.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
-        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
-          <p style="margin-bottom: 30px;">The goal of automation is not just saving time, but creating <strong>Cashflow</strong> without constant manual intervention. By integrating AI-driven workflows, a single individual can now perform the work of a five-person agency.</p>
-          <h2 style="color: #fff; font-size: 1.8rem; margin: 50px 0 20px;">Orchestrating the Invisible Workforce</h2>
-          <p>From lead generation to automated delivery, the modern solo-preneur builds systems that breathe on their own. At ivive, we architect these invisible engines for high-end success.</p>
-        </div>`;
-      break;
+        case 'post2':
+            content = `
+                <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Automation / Efficiency</p>
+                <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">Solo Business Automation</h1>
+                <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-02.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+                <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+                    <p style="margin-bottom: 30px;">The goal of automation is not just saving time, but creating <strong>Cashflow</strong> without constant manual intervention. By integrating AI-driven workflows, a single individual can now perform the work of a five-person agency.</p>
+                    <h2 style="color: #fff; font-size: 1.8rem; margin: 50px 0 20px;">Orchestrating the Invisible Workforce</h2>
+                    <p>From lead generation to automated delivery, the modern solo-preneur builds systems that breathe on their own. At ivive, we architect these invisible engines for high-end success.</p>
+                </div>`;
+            break;
 
-    case 'post3':
-      content = `
-        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Design / Branding</p>
-        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">High-End Minimalism</h1>
-        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-03.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
-        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
-          <p style="margin-bottom: 30px;">Why do premium brands choose minimalism? Because <strong>Simplicity is the ultimate sophistication</strong>. In a world of noise, silence is loud. A clean, dark-themed interface communicates authority and focus.</p>
-          <p>Design is not how it looks; it's how it works and how it makes the user feel. We remove the clutter to let your business message shine with clarity and power.</p>
-        </div>`;
-      break;
+        case 'post3':
+            content = `
+                <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Design / Branding</p>
+                <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">High-End Minimalism</h1>
+                <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-03.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+                <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+                    <p style="margin-bottom: 30px;">Why do premium brands choose minimalism? Because <strong>Simplicity is the ultimate sophistication</strong>. In a world of noise, silence is loud. A clean, dark-themed interface communicates authority and focus.</p>
+                    <p>Design is not how it looks; it's how it works and how it makes the user feel. We remove the clutter to let your business message shine with clarity and power.</p>
+                </div>`;
+            break;
 
-    case 'post4':
-      content = `
-        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Technology / 2026</p>
-        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">2026 Web Tech Trends</h1>
-        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-04.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
-        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
-          <p style="margin-bottom: 30px;">In 2026, the best tech stack is the one that allows for the fastest pivot. We move away from heavy databases and towards <strong>Edge Computing</strong> and <strong>Contextual AI</strong> integration.</p>
-          <p>Don't get married to a framework; get married to the architecture. Our philosophy at ivive is to remain agile, lean, and always ahead of the curve.</p>
-        </div>`;
-      break;
+        case 'post4':
+            content = `
+                <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Technology / 2026</p>
+                <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">2026 Web Tech Trends</h1>
+                <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-04.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+                <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+                    <p style="margin-bottom: 30px;">In 2026, the best tech stack is the one that allows for the fastest pivot. We move away from heavy databases and towards <strong>Edge Computing</strong> and <strong>Contextual AI</strong> integration.</p>
+                    <p>Don't get married to a framework; get married to the architecture. Our philosophy at ivive is to remain agile, lean, and always ahead of the curve.</p>
+                </div>`;
+            break;
 
-    default:
-      content = `<h1>Coming Soon</h1><p>Content is being prepared.</p>`;
-  }
-  
-  contentArea.innerHTML = content;
+        default:
+            content = `<h1 style="color:#fff;">Coming Soon</h1><p style="color:rgba(255,255,255,0.5);">Content is being prepared.</p>`;
+    }
+    contentArea.innerHTML = content;
 }
 
-// [4] 블로그 목록으로 돌아가기 (View Reset)
+/**
+ * [4] 블로그 목록 복귀 (Reset)
+ */
 function showBlogList() {
-  document.getElementById('blog-list-view').style.display = 'block';
-  document.getElementById('blog-detail-view').style.display = 'none';
-  document.getElementById('blog-layer').scrollTop = 0;
+    const listView = document.getElementById('blog-list-view');
+    const detailView = document.getElementById('blog-detail-view');
+    const layer = document.getElementById('blog-layer');
+
+    if (listView) listView.style.display = 'block';
+    if (detailView) detailView.style.display = 'none';
+    if (layer) layer.scrollTop = 0;
 }
 </script>
 </body>
