@@ -19,59 +19,59 @@
 <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 <style>
 :root { 
---speed: 0.8s; 
---accent: #D4AF37; 
+    --speed: 0.8s; 
+    --accent: #D4AF37; 
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior: smooth; }
 body { 
-height: 100%; width: 100%; 
-overflow: hidden; background: #000; 
-font-family: 'Inter', sans-serif;
+    height: 100%; width: 100%; 
+    overflow: hidden; background: #000; 
+    font-family: 'Inter', sans-serif;
 }
 body.stop-scroll { overflow: hidden; }
 
 header {
-position: fixed; top: 0; left: 0; width: 100%;
-display: flex; justify-content: space-between; align-items: center;
-padding: 2rem 5%; z-index: 100;
-background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+    position: fixed; top: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 2rem 5%; z-index: 100;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
 }
 .logo img { height: 30px; cursor: pointer; }
 nav ul { display: flex; list-style: none; gap: 40px; }
 nav ul li a {
-color: #fff; text-decoration: none; font-size: 0.9rem;
-font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
-opacity: 0.6; transition: 0.3s;
+    color: #fff; text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; text-transform: uppercase; letter-spacing: 1px;
+    opacity: 0.6; transition: 0.3s;
 }
 nav ul li a:hover, nav ul li a.active { opacity: 1; color: var(--accent); }
 .contact-btn {
-background: var(--accent); color: #fff; padding: 10px 25px;
-border-radius: 50px; text-decoration: none; font-size: 0.85rem; font-weight: bold;
-cursor: pointer;
+    background: var(--accent); color: #fff; padding: 10px 25px;
+    border-radius: 50px; text-decoration: none; font-size: 0.85rem; font-weight: bold;
+    cursor: pointer;
 }
 
 #bg-fixed {
-position: fixed; inset: 0; z-index: -2;
-background-size: cover; background-position: center;
-transition: background-image var(--speed) ease-in-out;
+    position: fixed; inset: 0; z-index: -2;
+    background-size: cover; background-position: center;
+    transition: background-image var(--speed) ease-in-out;
 }
 .snap {
-height: 100vh; width: 100vw;
-overflow-y: scroll; scroll-snap-type: y mandatory;
--ms-overflow-style: none; scrollbar-width: none; 
+    height: 100vh; width: 100vw;
+    overflow-y: scroll; scroll-snap-type: y mandatory;
+    -ms-overflow-style: none; scrollbar-width: none; 
 }
 .snap::-webkit-scrollbar { display: none; }
 
 section {
-height: 100vh; width: 100vw; scroll-snap-align: start;
-display: flex; flex-direction: column; align-items: center;
-justify-content: center; color: #fff; text-align: center;
+    height: 100vh; width: 100vw; scroll-snap-align: start;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; color: #fff; text-align: center;
 }
 .reveal {
-opacity: 0; transform: translateY(30px); filter: blur(10px);
-transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+    opacity: 0; transform: translateY(30px); filter: blur(10px);
+    transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
 }
 .active .reveal { opacity: 1; transform: translateY(0); filter: blur(0px); }
 
@@ -79,43 +79,43 @@ h1 { font-size: 4.5rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 1
 p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
 
 .view-more-btn {
-margin-top: 2rem; color: #fff; text-decoration: none;
-font-size: 0.9rem; letter-spacing: 2px;
-border-bottom: 1px solid rgba(255,255,255,0.3);
-padding-bottom: 5px; transition: 0.3s; cursor: pointer;
+    margin-top: 2rem; color: #fff; text-decoration: none;
+    font-size: 0.9rem; letter-spacing: 2px;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+    padding-bottom: 5px; transition: 0.3s; cursor: pointer;
 }
 .view-more-btn:hover { border-color: var(--accent); color: var(--accent); }
 
 .overlay {
-position: fixed; top: 0; right: 0; width: 100%; height: 100%;
-background: #000; z-index: 200;
-transform: translateX(100%);
-transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-padding: 8% 5%; overflow-y: auto;
+    position: fixed; top: 0; right: 0; width: 100%; height: 100%;
+    background: #000; z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+    padding: 8% 5%; overflow-y: auto;
 }
 .overlay.open { transform: translateX(0); }
 .close-overlay {
-position: absolute; top: 40px; right: 5%;
-color: #fff; cursor: pointer; font-size: 0.8rem; letter-spacing: 2px;
+    position: absolute; top: 40px; right: 5%;
+    color: #fff; cursor: pointer; font-size: 0.8rem; letter-spacing: 2px;
 }
 
 .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
 
 .grid-item h3 { 
-color: #eee;
-margin-top: 15px; 
-font-size: 1.1rem; 
-font-weight: 500;
-transition: color 0.3s ease;
-cursor: pointer;
+    color: #eee;
+    margin-top: 15px; 
+    font-size: 1.1rem; 
+    font-weight: 500;
+    transition: color 0.3s ease;
+    cursor: pointer;
 }
 .grid-item:hover h3 { color: var(--accent); }
 .grid-item .img-box img { 
-width: 100%; height: 100%; object-fit: cover; 
-opacity: 0.7; transition: 0.5s; 
+    width: 100%; height: 100%; object-fit: cover; 
+    opacity: 0.7; transition: 0.5s; 
 }
 .grid-item:hover .img-box img { 
-opacity: 1; transform: scale(1.05); 
+    opacity: 1; transform: scale(1.05); 
 }
 .grid-item p { font-size: 0.95rem; color: rgba(255,255,255,0.6); }
 
@@ -123,136 +123,129 @@ opacity: 1; transform: scale(1.05);
 .form-group { margin-bottom: 25px; }
 .form-group label { display: block; color: rgba(255,255,255,0.5); font-size: 0.75rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .form-group input, .form-group textarea {
-width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
-padding: 12px 0; color: #fff; font-size: 1.1rem; outline: none; transition: 0.3s;
+    width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.2);
+    padding: 12px 0; color: #fff; font-size: 1.1rem; outline: none; transition: 0.3s;
 }
 .form-group input:focus, .form-group textarea:focus { border-bottom-color: var(--accent); }
 .submit-btn {
-background: var(--accent); color: #fff; border: none; padding: 18px 50px;
-border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s;
+    background: var(--accent); color: #fff; border: none; padding: 18px 50px;
+    border-radius: 50px; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s;
 }
 .submit-btn:hover { transform: scale(1.05); }
 
 /* 블로그 레이어 전용 스타일 */
 #blog-layer {
-z-index: 999; /* 최상단 */
-background: #000; /* 완전 블랙 */
+    z-index: 999; /* 최상단 */
+    background: #000; /* 완전 블랙 */
 }
 
 .grid-container {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-gap: 30px;
-padding: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+    padding: 20px 0;
 }
 
 .grid-item {
-transition: transform 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .grid-item:hover {
-transform: translateY(-10px);
+    transform: translateY(-10px);
 }
 
 .img-box {
-overflow: hidden;
-border: 1px solid #222;
+    overflow: hidden;
+    border: 1px solid #222;
 }
 
 .archive-grid-fixed {
-display: grid;
-grid-template-columns: repeat(6, 1fr); 
-gap: 20px; 
-margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    gap: 20px; 
+    margin-top: 30px;
 }
 
 @media (max-width: 768px) {
-.archive-grid-fixed {
-grid-template-columns: repeat(3, 1fr); 
-gap: 10px;
-}
-.archive-slim-item span {
-font-size: 8px !important;
-}
-header {
-flex-direction: column; 
-padding: 1.5rem 0;
-gap: 15px; 
-}
-.logo {
-width: 100%;
-display: flex;
-justify-content: center;
-}
-.logo img { height: 25px; }
-nav { display: block !important; position: static; }
-nav ul { justify-content: center; gap: 15px; }
-nav ul li a { font-size: 0.75rem; letter-spacing: 0.5px; }
-.contact-btn { display: none !important; }
-h1 { font-size: 2.2rem; }
+    .archive-grid-fixed {
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 10px;
+    }
+    .archive-slim-item span {
+        font-size: 8px !important;
+    }
+    header {
+        flex-direction: column; 
+        padding: 1.5rem 0;
+        gap: 15px; 
+    }
+    .logo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .logo img { height: 25px; }
+    nav { display: block !important; position: static; }
+    nav ul { justify-content: center; gap: 15px; }
+    nav ul li a { font-size: 0.75rem; letter-spacing: 0.5px; }
+    .contact-btn { display: none !important; }
+    h1 { font-size: 2.2rem; }
 }
 </style>
 </head>
 <body>
 
 <header>
-<div class="logo"><img src="img/logo.png" alt="ivive" onclick="location.href='#index'"></div>
-<nav>
-<ul>
-<li><a href="#about" class="nav-link">about</a></li>
-<li><a href="#services" class="nav-link">services</a></li>
-<li><a href="#portfolio" class="nav-link">portfolio</a></li>
-<li><a href="#prompts" class="nav-link">prompts</a></li>
-<li><a href="#contact" class="nav-link">contact</a></li>   
-</ul>
-</nav>
+  <div class="logo"><img src="img/logo.png" alt="ivive" onclick="location.href='#index'"></div>
+  <nav>
+    <ul>
+      <li><a href="#about" class="nav-link">about</a></li>
+      <li><a href="#services" class="nav-link">services</a></li>
+      <li><a href="#portfolio" class="nav-link">portfolio</a></li>
+      <li><a href="#prompts" class="nav-link">prompts</a></li>
+      <li><a href="#contact" class="nav-link">contact</a></li>   
+    </ul>
+  </nav>
 <div class="contact-btn" style="background: transparent; border: 1px solid var(--accent);" onclick="toggleOverlay('blog-layer', true)">ARCHIVE</div>
 </header>
 
 <div id="bg-fixed"></div>
 
 <div class="snap" id="main-snap">
-<section id="index" class="active" data-bg="img/index-bg.png">
-<h1 class="reveal">ivive</h1>
-<p class="reveal">breathing life into intelligence.<br>(ai + alive)</p>
-</section>
+  <section id="index" class="active" data-bg="img/index-bg.png">
+    <h1 class="reveal">ivive</h1>
+    <p class="reveal">breathing life into intelligence.<br>(ai + alive)</p>
+  </section>
 
-  <section id="about" data-bg="img/about-bg.webp">
   <section id="about" data-bg="img/about-bg.png">
-<h1 class="reveal">humanity x ai</h1>
-<p class="reveal">designing values beyond technology.</p>
-<div class="view-more-btn reveal" onclick="toggleOverlay('about-layer', true)">our philosophy →</div>
-</section>
+    <h1 class="reveal">humanity x ai</h1>
+    <p class="reveal">designing values beyond technology.</p>
+    <div class="view-more-btn reveal" onclick="toggleOverlay('about-layer', true)">our philosophy →</div>
+  </section>
 
-  <section id="services" data-bg="img/services-bg.webp">
   <section id="services" data-bg="img/services-bg.png">
-<h1 class="reveal">solutions</h1>
-<p class="reveal">redefining the future of business.</p>
-<div class="view-more-btn reveal" onclick="toggleOverlay('services-layer', true)">view services →</div>
-</section>
+    <h1 class="reveal">solutions</h1>
+    <p class="reveal">redefining the future of business.</p>
+    <div class="view-more-btn reveal" onclick="toggleOverlay('services-layer', true)">view services →</div>
+  </section>
 
-  <section id="portfolio" data-bg="img/portfolio-bg.webp">
   <section id="portfolio" data-bg="img/portfolio-bg.png">
-<h1 class="reveal">evidence</h1>
-<p class="reveal">records of innovation proven by results.</p>
-<div class="view-more-btn reveal" onclick="toggleOverlay('portfolio-layer', true)">view projects →</div>
-</section>
+    <h1 class="reveal">evidence</h1>
+    <p class="reveal">records of innovation proven by results.</p>
+    <div class="view-more-btn reveal" onclick="toggleOverlay('portfolio-layer', true)">view projects →</div>
+  </section>
 
-  <section id="prompts" data-bg="img/prompts-bg.webp">
   <section id="prompts" data-bg="img/prompts-bg.png">
-<h1 class="reveal">ivive lab</h1>
-<p class="reveal">the most sophisticated way to talk with ai.</p>
-<div class="view-more-btn reveal" onclick="toggleOverlay('prompts-layer', true)">view prompts →</div>
-</section>
+    <h1 class="reveal">ivive lab</h1>
+    <p class="reveal">the most sophisticated way to talk with ai.</p>
+    <div class="view-more-btn reveal" onclick="toggleOverlay('prompts-layer', true)">view prompts →</div>
+  </section>
 
-   <section id="contact" data-bg="img/connect-bg.webp">
 <section id="contact" data-bg="img/connect-bg.png" style="display: flex; flex-direction: column; justify-content: space-between; padding: 15vh 5% 5vh; text-align: center;">
   
   <div style="flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-<h1 class="reveal">connect</h1>
-<p class="reveal">ready to bring new vitality to your vision?<br>join our partnership for the next evolution.</p>
-    <div class="view-more-btn reveal" onclick="toggleOverlay('contact-layer', true)">view contact →</div>
-  </section>
+    <h1 class="reveal">connect</h1>
+    <p class="reveal">ready to bring new vitality to your vision?<br>join our partnership for the next evolution.</p>
     
     <div class="view-more-btn reveal" onclick="toggleOverlay('contact-layer', true)" style="display: inline-block; width: auto; margin: 0 auto;">
       view contact →
@@ -274,16 +267,520 @@ h1 { font-size: 2.2rem; }
 </div>
 
 <div id="about-layer" class="overlay">
-@@ -647,7 +665,7 @@
+  <div class="close-overlay" onclick="toggleOverlay('about-layer', false)">CLOSE ×</div>
+  <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 30px;">The Business Architect</h2>
+  <div style="max-width: 800px; color: rgba(255,255,255,0.7); line-height: 1.8; font-size: 1.1rem;">
+    <p>Led by <strong>Director LEE ON</strong>, ivive operates as a high-end Business Architecture studio.</p><br>
+    <p>We don't just build websites; we design the fundamental logic of your enterprise. From disruptive fee structures to AI-driven automation, we architect systems that breathe life into your vision.</p>
+    <img src="img/about-img.png" alt="Detail" style="width:100%; margin-top:40px; border-radius:4px; opacity:0.8;">  
+  </div>
 </div>
 
+<div id="services-layer" class="overlay">
+  <div class="close-overlay" onclick="toggleOverlay('services-layer', false)">CLOSE ×</div>
+  <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 10px;">Core Services</h2>
+  <p style="color: rgba(255,255,255,0.5); margin-bottom: 50px;">Architecting the intersection of human intuition and artificial intelligence.</p>
+  
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; margin-bottom: 20px; background: #111;">
+        <img src="img/service-01.png" alt="AI Agent Automation" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+      </div>
+      <h3>Autonomous AI Agents</h3>
+      <p>Engineering self-evolving AI workflows that transcend basic automation to handle complex, multi-step business operations.</p>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; margin-bottom: 20px; background: #111;">
+        <img src="img/service-02.png" alt="Digital Experience" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+      </div>
+      <h3>High-End Digital Experience</h3>
+      <p>Crafting sensory-driven web interfaces that merge high-fidelity aesthetics with cutting-edge performance engineering.</p>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; margin-bottom: 20px; background: #111;">
+        <img src="img/service-03.png" alt="Strategic Logic" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+      </div>
+      <h3>Disruptive Business Logic</h3>
+      <p>Designing radical market structures—including our signature 1% fee model—to dismantle traditional high-commission barriers.</p>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; margin-bottom: 20px; background: #111;">
+        <img src="img/service-04.png" alt="Trend Intelligence" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+      </div>
+      <h3>Predictive Trend Intelligence</h3>
+      <p>Forecasting technological shifts beyond 2026 to ensure your enterprise remains resilient against future market turbulence.</p>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; margin-bottom: 20px; background: #111;">
+        <img src="img/service-05.png" alt="Prompt Engineering" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+      </div>
+      <h3>ivive Lab (R&D)</h3>
+      <p>Pushing the boundaries of Prompt Engineering and Generative Art to create proprietary intellectual assets for your brand.</p>
+    </div>
+  </div>
+</div>
+
+<div id="portfolio-layer" class="overlay">
+  <div class="close-overlay" onclick="toggleOverlay('portfolio-layer', false)">CLOSE ×</div>
+  <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 10px;">Selected Works</h2>
+  <p style="color: rgba(255,255,255,0.5); margin-bottom: 40px;">Proven expertise across 20 years of digital innovation.</p>
+  
+  <div class="grid-container">
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_01.png" alt="Shinhan Bank">
+      </div>
+      <h3>Shinhan Bank VML</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_02.png" alt="Ahnlab Ad">
+      </div>
+      <h3>Ahnlab Ad</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_03.png" alt="SNUBH">
+      </div>
+      <h3>SNU Bundang Hospital</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_04.png" alt="SMC">
+      </div>
+      <h3>Seongnam Medical Center</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_05.png" alt="Arisu">
+      </div>
+      <h3>Seoul Arisu</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_06.png" alt="Jamboree">
+      </div>
+      <h3>World Jamboree</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_07.png" alt="Anyang">
+      </div>
+      <h3>Smart Dispatch System</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_08.png" alt="APOKI">
+      </div>
+      <h3>VV-ENTER APOKI</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_09.png" alt="KOBIA">
+      </div>
+      <h3>MOIBA</h3>
+    </div>
+
+    <div class="grid-item">
+      <div class="img-box" style="aspect-ratio: 16/9; background: #1a1a1a; overflow: hidden;">
+        <img src="img/portfolio_10.png" alt="Saemaul">
+      </div>
+      <h3>Saemaul HQ</h3>
+    </div>
+  </div>
+
+<div style="margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
+  <h2 style="color: rgba(255,255,255,0.4); font-size: 0.9rem; letter-spacing: 5px; margin-bottom: 25px; text-transform: uppercase;">Full Archive Index (21 Selected)</h2>
+    <div class="archive-grid-fixed">
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-01.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">NH Sports Group</span>
+      </div>
+    </div>
+
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-02.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">VENEBLUE Walkerhill</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-03.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Idea Factory</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-04.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">KRRESA</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-05.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Bongpo KOAROO</span>
+      </div>
+    </div>
+    
+     <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-06.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">G-Tower Knowledge Industry Center
+</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-07.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">M-Cluster</span>
+      </div>
+    </div>
+
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-08.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">KGC - GiniPet</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-09.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Hyosung Harrington Tower</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-10.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Jung Kwan Jang Mall</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-11.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Spring County Xi</span>
+      </div>
+    </div>
+    
+     <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-12.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Xi Hybrid App</span>
+      </div>
+    </div> 
+    
+     <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-13.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">ongdam KOAROO Car-Board</span>
+      </div>
+    </div>
+
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-14.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Sejong Leader's Foret</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-15.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Sejong Finance Center</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-16.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">SK Chemicals</span>
+      </div>
+    </div>
+    
+    <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-19.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;">Future Semiconductor Research Center</span>
+      </div>
+    </div>
+    
+     <div class="archive-slim-item" style="cursor: pointer;">
+      <div style="aspect-ratio: 16/11; background: #111; overflow: hidden; border-radius: 2px;">
+        <img src="img/sub-portfolio-21.jpg" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.3s;" onmouseover="this.style.opacity='1'; this.style.transform='scale(1.05)'" onmouseout="this.style.opacity='0.7'; this.style.transform='scale(1)'" loading="lazy">
+      </div>
+      <div style="margin-top: 8px; display: flex; justify-content: space-between;">
+          <span style="font-size: 12px; color: #fff; font-weight: 500;"> Gajang Yurim Norwegian Wood</span>
+      </div>
+    </div>    
+
+    </div>
 </div>
 </div>
+
+
+
+
+<div id="prompts-layer" class="overlay">
+  <div class="close-overlay" onclick="toggleOverlay('prompts-layer', false)">CLOSE ×</div>
+  <h2 style="color: #fff; font-size: 2.5rem; margin-bottom: 10px;">ivive Lab Records</h2>
+  <div class="grid-container">
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-01.png" alt="AI 1" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-02.png" alt="AI 2" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-03.png" alt="AI 1" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-04.png" alt="AI 2" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-05.png" alt="AI 1" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-06.png" alt="AI 2" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-07.png" alt="AI 1" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-08.png" alt="AI 2" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-09.png" alt="AI 1" style="width:100%; height:100%; object-fit:cover;"></div>
+    <div class="grid-item" style="padding:0; aspect-ratio:1/1;"><img src="img/prompt-10.png" alt="AI 2" style="width:100%; height:100%; object-fit:cover;"></div>                
+  </div>
+</div>
+
+<div id="contact-layer" class="overlay" data-bg="img/services-bg.png">
+  <div class="close-overlay" onclick="toggleOverlay('contact-layer', false)">CLOSE ×</div>
+  <h2 style="color: #fff; font-size: 2.5rem;">Let's Architect the Future</h2>
+  <p style="color: rgba(255,255,255,0.5);">Direct access to the Business Architect. Based in Seoul, serving the world.</p>
+  
+  <form class="contact-form" action="https://formspree.io/f/네_고유_ID" method="POST">
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" name="name" placeholder="Enter your name" required>
+    </div>
+    <div class="form-group">
+      <label>Global Email Address</label>
+      <input type="email" name="email" placeholder="email@domain.com" required>
+    </div>
+    <div class="form-group">
+      <label>Project Scope</label>
+      <input type="text" name="subject" placeholder="Web / Business / AI Automation">
+    </div>
+    <div class="form-group">
+      <label>Your Vision</label>
+      <textarea name="message" rows="4" placeholder="Describe the future you want to build" required></textarea>
+    </div>
+    <button type="submit" class="submit-btn">SEND ARCHITECTURE REQUEST</button>
+  </form>
+</div>
+
+<div id="blog-layer" class="overlay">
+  <div class="close-overlay" onclick="toggleOverlay('blog-layer', false)">CLOSE ×</div>
+
+  <div id="blog-list-view" style="display: block; padding: 100px 50px;">
+    <h2 style="color: #fff; font-size: 3rem; margin-bottom: 10px; font-weight: 700;">Archive</h2>
+    <p style="color: var(--accent); margin-bottom: 60px; letter-spacing: 2px;">INSIGHTS & ARCHITECTURE</p>
+    
+    <div class="grid-container">
+      <div class="grid-item" onclick="showPost('post1')">
+        <div class="img-box" style="aspect-ratio: 16/9; background: #111;">
+          <img src="img/archive-01.png" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+        </div>
+        <h3 style="margin-top: 20px; font-size: 1.2rem; font-weight: 300;">Why Architects Matter</h3>
+      </div>
+      <div class="grid-item" onclick="showPost('post2')">
+        <div class="img-box" style="aspect-ratio: 16/9; background: #111;">
+          <img src="img/archive-02.png" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+        </div>
+        <h3 style="margin-top: 20px; font-size: 1.2rem; font-weight: 300;">Solo Business Automation</h3>
+      </div>
+      <div class="grid-item" onclick="showPost('post3')">
+        <div class="img-box" style="aspect-ratio: 16/9; background: #111;">
+          <img src="img/archive-03.png" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+        </div>
+        <h3 style="margin-top: 20px; font-size: 1.2rem; font-weight: 300;">High-End Minimalism</h3>
+      </div>
+      <div class="grid-item" onclick="showPost('post4')">
+        <div class="img-box" style="aspect-ratio: 16/9; background: #111;">
+          <img src="img/archive-04.png" style="width:100%; height:100%; object-fit:cover; opacity:0.6;">
+        </div>
+        <h3 style="margin-top: 20px; font-size: 1.2rem; font-weight: 300;">2026 Web Tech Trends</h3>
+      </div>                  
+    </div>
+  </div>
+
+    <div id="blog-detail-view" style="display: none; max-width: 900px; margin: 0 auto; padding: 20px 50px;">
+  
+    <div class="back-btn-container" style="padding-top: 10px; margin-bottom: 20px;">
+      <div onclick="showBlogList()" style="cursor:pointer; color:var(--accent); font-size: 0.8rem; letter-spacing: 2px; display: inline-block;">
+        ← BACK TO LIST
+      </div>
+    </div>
+
+      <div id="post-content">
+      </div>
+  
+  </div>
  </div>
 
 <script>
 // [1] 섹션 감지 및 배경 변경 (Scroll Observer)
-@@ -766,4 +784,3 @@
+const bgFixed = document.getElementById("bg-fixed");
+const sections = document.querySelectorAll("section");
+const navLinks = document.querySelectorAll(".nav-link");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      sections.forEach(s => s.classList.remove("active"));
+      entry.target.classList.add("active");
+      const bgPath = entry.target.getAttribute('data-bg');
+      if (bgPath) bgFixed.style.backgroundImage = `url('${bgPath}')`;
+      const id = entry.target.getAttribute("id");
+      navLinks.forEach(link => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${id}`) link.classList.add("active");
+      });
+    }
+  });
+}, { threshold: 0.6 });
+sections.forEach(s => observer.observe(s));
+
+// [2] 레이어 열고 닫기 (Overlay Control)
+function toggleOverlay(layerId, open) {
+  const layer = document.getElementById(layerId);
+  if (!layer) return;
+  
+  if (open) {
+    layer.classList.add("open");
+    document.body.classList.add("stop-scroll");
+  } else {
+    layer.classList.remove("open");
+    document.body.classList.remove("stop-scroll");
+    if(layerId === 'blog-layer') {
+      setTimeout(showBlogList, 300); // 닫힐 때 리스트 뷰로 리셋
+    }
+  }
+}
+
+// [3] 블로그 포스트 보기 (The Heart of Content)
+function showPost(postId) {
+  const listView = document.getElementById('blog-list-view');
+  const detailView = document.getElementById('blog-detail-view');
+  const contentArea = document.getElementById('post-content');
+
+  // 레이아웃 전환
+  listView.style.display = 'none';
+  detailView.style.display = 'block';
+  document.getElementById('blog-layer').scrollTop = 0;
+
+  let content = "";
+
+  // Switch 문으로 깔끔하게 정리 (No redundant IF statements!)
+  switch(postId) {
+    case 'post1':
+      content = `
+        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Insight / Strategy</p>
+        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">Why Architects Matter</h1>
+        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-01.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+          <p style="margin-bottom: 30px;">In an era where AI generates code in seconds, the role of a 'Developer' is evolving. We are no longer just typists; we are <strong>Architects of Value</strong>. 20 years of experience has taught me that code is temporary, but structure is permanent.</p>
+          <blockquote style="border-left: 3px solid var(--accent); padding-left: 30px; margin: 60px 0; font-style: italic; color: #fff; font-size: 1.5rem; background: rgba(255,255,255,0.05); padding: 40px;">"The best way to predict the future is to architect it."</blockquote>
+          <p>Strategic design is about deciding what NOT to build. This ensures efficiency and long-term sustainability for your business.</p>
+        </div>`;
+      break;
+
+    case 'post2':
+      content = `
+        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Automation / Efficiency</p>
+        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">Solo Business Automation</h1>
+        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-02.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+          <p style="margin-bottom: 30px;">The goal of automation is not just saving time, but creating <strong>Cashflow</strong> without constant manual intervention. By integrating AI-driven workflows, a single individual can now perform the work of a five-person agency.</p>
+          <h2 style="color: #fff; font-size: 1.8rem; margin: 50px 0 20px;">Orchestrating the Invisible Workforce</h2>
+          <p>From lead generation to automated delivery, the modern solo-preneur builds systems that breathe on their own. At ivive, we architect these invisible engines for high-end success.</p>
+        </div>`;
+      break;
+
+    case 'post3':
+      content = `
+        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Design / Branding</p>
+        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">High-End Minimalism</h1>
+        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-03.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+          <p style="margin-bottom: 30px;">Why do premium brands choose minimalism? Because <strong>Simplicity is the ultimate sophistication</strong>. In a world of noise, silence is loud. A clean, dark-themed interface communicates authority and focus.</p>
+          <p>Design is not how it looks; it's how it works and how it makes the user feel. We remove the clutter to let your business message shine with clarity and power.</p>
+        </div>`;
+      break;
+
+    case 'post4':
+      content = `
+        <p style="color: var(--accent); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 10px; letter-spacing: 2px;">Technology / 2026</p>
+        <h1 style="font-size: 3.0rem; line-height: 1.1; color: #fff; margin-bottom: 40px; font-weight: 700;">2026 Web Tech Trends</h1>
+        <div style="width: 100%; margin-bottom: 60px;"><img src="img/archive-04.png" style="width: 100%; border-radius: 4px; opacity: 0.7;"></div>
+        <div style="color: rgba(255,255,255,0.7); line-height: 2; font-size: 1.15rem; max-width: 750px;">
+          <p style="margin-bottom: 30px;">In 2026, the best tech stack is the one that allows for the fastest pivot. We move away from heavy databases and towards <strong>Edge Computing</strong> and <strong>Contextual AI</strong> integration.</p>
+          <p>Don't get married to a framework; get married to the architecture. Our philosophy at ivive is to remain agile, lean, and always ahead of the curve.</p>
+        </div>`;
+      break;
+
+    default:
+      content = `<h1>Coming Soon</h1><p>Content is being prepared.</p>`;
+  }
+  
+  contentArea.innerHTML = content;
+}
+
+// [4] 블로그 목록으로 돌아가기 (View Reset)
+function showBlogList() {
+  document.getElementById('blog-list-view').style.display = 'block';
+  document.getElementById('blog-detail-view').style.display = 'none';
+  document.getElementById('blog-layer').scrollTop = 0;
+}
 </script>
 </body>
 </html>
