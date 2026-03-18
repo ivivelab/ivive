@@ -59,7 +59,7 @@ nav ul li a:hover, nav ul li a.active { opacity: 1; color: var(--accent); }
 }
 .snap {
     height: 100vh; width: 100vw;
-    overflow-y: scroll; scroll-snap-type: y mandatory;
+    overflow-y: scroll; scroll-snap-type: y proximity;
     -ms-overflow-style: none; scrollbar-width: none; 
 }
 .snap::-webkit-scrollbar { display: none; }
@@ -257,7 +257,7 @@ p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
       <span>COMPANY. ivive</span>
       <span>LICENSE. 455-58-00818</span>
       <span>CEO. Lee Gwang Hyeon</span>
-      <span>MAIL. ivive.lab@gmail.com</span>
+      <span>MAIL. <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3cad5cad5c68dcfc2c1e3c4cec2cacf8dc0ccce">[email&#160;protected]</a></span>
     </div>
     <p>© 2026 ivive. All rights reserved. Designed for the Next Intelligence.</p>
   </div>
@@ -667,7 +667,7 @@ p { font-size: 1.2rem; opacity: 0.7; max-width: 600px; line-height: 1.6; }
   </div>
  </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // [1] 섹션 감지 및 배경 변경 (Scroll Observer)
 const bgFixed = document.getElementById("bg-fixed");
 const sections = document.querySelectorAll("section");
@@ -781,6 +781,44 @@ function showBlogList() {
   document.getElementById('blog-detail-view').style.display = 'none';
   document.getElementById('blog-layer').scrollTop = 0;
 }
+
+// [5] PC방 등 어떤 마우스에서도 균일한 섹션 전환 (JS Scroll Control)
+(function() {
+  const snapContainer = document.getElementById('main-snap');
+  const allSections = Array.from(document.querySelectorAll('#main-snap section'));
+  let currentIndex = 0;
+  let isScrolling = false;
+
+  snapContainer.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    if (isScrolling) return;
+    isScrolling = true;
+
+    const direction = e.deltaY > 0 ? 1 : -1;
+    currentIndex = Math.max(0, Math.min(allSections.length - 1, currentIndex + direction));
+    allSections[currentIndex].scrollIntoView({ behavior: 'smooth' });
+
+    setTimeout(function() { isScrolling = false; }, 900);
+  }, { passive: false });
+
+  // 키보드 방향키 지원
+  document.addEventListener('keydown', function(e) {
+    if (isScrolling) return;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown') {
+      e.preventDefault();
+      isScrolling = true;
+      currentIndex = Math.min(allSections.length - 1, currentIndex + 1);
+      allSections[currentIndex].scrollIntoView({ behavior: 'smooth' });
+      setTimeout(function() { isScrolling = false; }, 900);
+    } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+      e.preventDefault();
+      isScrolling = true;
+      currentIndex = Math.max(0, currentIndex - 1);
+      allSections[currentIndex].scrollIntoView({ behavior: 'smooth' });
+      setTimeout(function() { isScrolling = false; }, 900);
+    }
+  });
+})();
 </script>
 </body>
 </html>
