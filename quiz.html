@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Judy's Voca Quiz 🐰</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #e6fffa 0%, #ebf8ff 100%);
+            padding: 1rem;
+        }
+        .quiz-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+            border: 4px solid #38b2ac;
+        }
+        .character { font-size: 2.8rem; margin-bottom: 0.3rem; }
+        h1 { color: #2c7a7b; font-size: 1.5rem; margin-bottom: 0.8rem; }
+
+        .progress-bar-wrap {
+            background: #e2e8f0;
+            border-radius: 99px;
+            height: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #38b2ac, #4299e1);
+            border-radius: 99px;
+            transition: width 0.4s ease;
+        }
+        .progress-text { font-size: 0.78rem; color: #718096; margin-bottom: 1rem; }
+
+        .pattern-badge {
+            display: inline-block;
+            background: #ebf8ff;
+            color: #2b6cb0;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 99px;
+            margin-bottom: 0.8rem;
+            border: 1px solid #bee3f8;
+        }
+
+        .question-box {
+            background: #f0fff4;
+            padding: 1.4rem;
+            border-radius: 1rem;
+            margin-bottom: 1.1rem;
+            border: 2px dashed #68d391;
+        }
+        .meaning { color: #2d3748; font-size: 1rem; font-weight: bold; margin-bottom: 0.6rem; }
+        .voca { color: #3182ce; font-size: 1.3rem; font-weight: 900; }
+
+        .template-hint {
+            background: #fffaf0;
+            border: 1px solid #fbd38d;
+            border-radius: 0.6rem;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.82rem;
+            color: #975a16;
+            margin-bottom: 0.9rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 2px solid #cbd5e0;
+            border-radius: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        input:focus { border-color: #38b2ac; box-shadow: 0 0 10px rgba(56,178,172,0.2); }
+        .hint { font-size: 0.76rem; color: #a0aec0; margin-bottom: 0.9rem; }
+
+        .btn-group { display: flex; gap: 10px; }
+        button {
+            flex: 1; padding: 0.9rem;
+            border: none; border-radius: 0.8rem;
+            cursor: pointer; font-weight: bold;
+            font-size: 1rem; transition: 0.2s; color: white;
+        }
+        .btn-check { background-color: #38b2ac; }
+        .btn-check:hover { background-color: #2c7a7b; }
+        .btn-next { background-color: #4299e1; }
+        .btn-next:hover { background-color: #2b6cb0; }
+        .btn-skip { background-color: #a0aec0; }
+        .btn-skip:hover { background-color: #718096; }
+
+        .feedback {
+            margin-top: 1.2rem;
+            font-weight: bold;
+            min-height: 2rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .correct { color: #38a169; }
+        .wrong { color: #e53e3e; }
+
+        .score-badge {
+            display: inline-block;
+            background: #f0fff4;
+            border: 1px solid #9ae6b4;
+            color: #276749;
+            font-size: 0.78rem;
+            padding: 3px 10px;
+            border-radius: 99px;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="quiz-container">
+    <div class="character">🐰</div>
+    <h1>Judy's Study Time!</h1>
+
+    <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="progress-text" id="progressText">0 / 0</div>
+
+    <div class="pattern-badge" id="patternBadge">패턴</div>
+
+    <div class="question-box">
+        <div id="meaning" class="meaning">로딩 중...</div>
+        <div id="voca" class="voca">단어</div>
+    </div>
+
+    <div class="template-hint" id="templateHint">패턴 힌트</div>
+
+    <input type="text" id="userInput" placeholder="영어로 완성해봐! (English)" autocomplete="off">
+    <div class="hint">대소문자 상관없어! 마침표 없이 입력해줘 🐰</div>
+
+    <div class="btn-group">
+        <button id="checkBtn" class="btn-check" onclick="checkAnswer()">확인 ✓</button>
+        <button id="nextBtn" class="btn-next" onclick="nextQuiz()" style="display:none">다음 →</button>
+        <button id="skipBtn" class="btn-skip" onclick="skipQuiz()">건너뛰기</button>
+    </div>
+
+    <div id="feedback" class="feedback"></div>
+    <div class="score-badge" id="scoreBadge">맞은 문제: 0개</div>
+</div>
+
+<script>
+// ────────────────────────────────────────────────
+// 1. 패턴 데이터
+// ────────────────────────────────────────────────
+const patterns = [
+    { head: "I'm trying to",      tail: "~하려고 노력 중이야",                   template: "I'm trying to [단어]" },
+    { head: "I'm supposed to",    tail: "~하기로 되어 있다",                     template: "I'm supposed to [단어]" },
+    { head: "I was about to",     tail: "막 ~하려던 참이었어",                   template: "I was about to [단어]" },
+    { head: "I'm here to",        tail: "~하러 여기 왔다",                       template: "I'm here to [단어]" },
+    { head: "I've been",          tail: "그동안 쭉 ~해왔다",                     template: "I've been [단어]" },
+    { head: "Let me",             tail: "지금 내가 ~할게",                       template: "Let me [단어]" },
+    { head: "Can I get",          tail: "~주문/요청할게요",                      template: "Can I get [단어]" },
+    { head: "Can you",            tail: "~해줄 수 있어? (요청)",                 template: "Can you [단어]" },
+    { head: "Do you mind",        tail: "~해도 괜찮을까요? (공손)",              template: "Do you mind [단어]" },
+    { head: "I'm not sure if",    tail: "~인지 확신이 없어",                     template: "I'm not sure if [단어]" },
+    { head: "I don't think",      tail: "~인 것 같지 않아",                     template: "I don't think [단어]" },
+    { head: "I think you should", tail: "~하는 게 좋을 것 같아 (조언)",         template: "I think you should [단어]" },
+    { head: "It feels like",      tail: "~처럼 느껴져",                         template: "It feels like [단어]" },
+    { head: "It looks like",      tail: "~인 것 같아 (보이기에)",               template: "It looks like [단어]" },
+    { head: "It sounds like",     tail: "~인 것 같아 (듣기에)",                 template: "It sounds like [단어]" },
+    { head: "There is",           tail: "~이 있다 (단수 존재 표현)",             template: "There is [단어]" },
+    { head: "There are",          tail: "~들이 있다 (복수 존재 표현)",           template: "There are [단어]" },
+    { head: "I'd like to",        tail: "~하고 싶어요 (공손한 의지)",            template: "I'd like to [단어]" },
+    { head: "I need you to",      tail: "~해줬으면 해",                         template: "I need you to [단어]" },
+    { head: "I just wanted to",   tail: "그냥 ~하고 싶었어",                    template: "I just wanted to [단어]" },
+    { head: "I was wondering if", tail: "~인지 궁금해요 (정중한 질문)",         template: "I was wondering if [단어]" },
+    { head: "The thing is",       tail: "그게 말인데 ~ (상황 설명)",            template: "The thing is [단어]" },
+    { head: "As far as I know",   tail: "내가 아는 한 ~",                       template: "As far as I know [단어]" },
+    { head: "You don't have to",  tail: "~할 필요 없어",                        template: "You don't have to [단어]" },
+    { head: "You might want to",  tail: "~해보는 게 좋을 것 같아 (부드러운 조언)", template: "You might want to [단어]" },
+    { head: "It depends on",      tail: "그건 ~에 따라 달라",                   template: "It depends on [단어]" },
+    { head: "I'll let you know",  tail: "~알려줄게",                            template: "I'll let you know [단어]" },
+    { head: "I didn't mean to",   tail: "~할 의도는 아니었어",                  template: "I didn't mean to [단어]" },
+    { head: "I can't wait to",    tail: "~하는 게 너무 기대돼",                 template: "I can't wait to [단어]" },
+    { head: "That's why",         tail: "그게 바로 ~한 이유야",                 template: "That's why [단어]" },
+    { head: "That's what I mean", tail: "내 말이 바로 그거야",                  template: "That's what I mean – [단어]" },
+];
+
+// ────────────────────────────────────────────────
+// 2. 단어 데이터
+// ────────────────────────────────────────────────
+const words = [
+    { eng: "work",              kor: "일하다" },
+    { eng: "study",             kor: "공부하다" },
+    { eng: "meet her",          kor: "그녀를 만나다" },
+    { eng: "call you",          kor: "너한테 전화하다" },
+    { eng: "finish this",       kor: "이거 끝내다" },
+    { eng: "exercise",          kor: "운동하다" },
+    { eng: "be there",          kor: "거기 가 있다" },
+    { eng: "leave",             kor: "떠나다" },
+    { eng: "help you",          kor: "도와주다" },
+    { eng: "try again",         kor: "다시 시도하다" },
+    { eng: "fix it",            kor: "고치다" },
+    { eng: "take a break",      kor: "쉬다" },
+    { eng: "go home",           kor: "집에 가다" },
+    { eng: "talk to you",       kor: "너랑 얘기하다" },
+    { eng: "start over",        kor: "다시 시작하다" },
+];
+
+// ────────────────────────────────────────────────
+// 3. 퀴즈 초기화
+// ────────────────────────────────────────────────
+let quizList = [];
+let currentIdx = 0;
+let currentAnswer = "";
+let correctCount = 0;
+let totalAnswered = 0;
+
+function shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5);
+}
+
+function initQuiz() {
+    quizList = [];
+    patterns.forEach(p => {
+        words.forEach(w => {
+            quizList.push({
+                patternLabel: p.head,
+                meaning:  p.tail,
+                voca:     w.kor,
+                template: p.template,
+                answer:   `${p.head} ${w.eng}`.toLowerCase().replace(/\s+/g, ' ').trim()
+            });
+        });
+    });
+    shuffle(quizList);
+    currentIdx = 0;
+    correctCount = 0;
+    totalAnswered = 0;
+}
+
+// ────────────────────────────────────────────────
+// 4. 문제 표시
+// ────────────────────────────────────────────────
+function nextQuiz() {
+    if (currentIdx >= quizList.length) {
+        alert(`🎉 모든 문제 완료! 정답률: ${correctCount}/${totalAnswered}\n다시 섞어서 시작할게!`);
+        initQuiz();
+    }
+
+    const q = quizList[currentIdx];
+    currentAnswer = q.answer;
+
+    document.getElementById('patternBadge').innerText  = q.patternLabel;
+    document.getElementById('meaning').innerText       = q.meaning;
+    document.getElementById('voca').innerText          = `[ ${q.voca} ]`;
+    document.getElementById('templateHint').innerText  = `💡 ${q.template}`;
+    document.getElementById('userInput').value         = "";
+    document.getElementById('feedback').innerText      = "";
+    document.getElementById('userInput').focus();
+
+    document.getElementById('checkBtn').style.display = "block";
+    document.getElementById('nextBtn').style.display  = "none";
+    document.getElementById('skipBtn').style.display  = "block";
+
+    updateProgress();
+}
+
+function updateProgress() {
+    const total = quizList.length;
+    const pct   = Math.round((currentIdx / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    document.getElementById('progressText').innerText  = `${currentIdx} / ${total}`;
+    document.getElementById('scoreBadge').innerText    = `맞은 문제: ${correctCount}개`;
+}
+
+// ────────────────────────────────────────────────
+// 5. 정답 확인
+// ────────────────────────────────────────────────
+function checkAnswer() {
+    const userVal  = document.getElementById('userInput').value.trim().toLowerCase().replace(/\s+/g, ' ');
+    const feedback = document.getElementById('feedback');
+    totalAnswered++;
+
+    if (userVal === currentAnswer) {
+        feedback.innerHTML = "✅ 정답이야! 훌륭해! 🐰";
+        feedback.className = "feedback correct";
+        correctCount++;
+        currentIdx++;
+        document.getElementById('checkBtn').style.display = "none";
+        document.getElementById('nextBtn').style.display  = "block";
+        document.getElementById('skipBtn').style.display  = "none";
+        updateProgress();
+    } else {
+        feedback.innerHTML = `❌ 아쉬워!<br>정답: <strong>${currentAnswer}</strong>`;
+        feedback.className = "feedback wrong";
+    }
+}
+
+function skipQuiz() {
+    const feedback = document.getElementById('feedback');
+    feedback.innerHTML = `⏭️ 건너뜀! 정답: <strong>${currentAnswer}</strong>`;
+    feedback.className = "feedback wrong";
+    totalAnswered++;
+    currentIdx++;
+    document.getElementById('checkBtn').style.display = "none";
+    document.getElementById('nextBtn').style.display  = "block";
+    document.getElementById('skipBtn').style.display  = "none";
+    updateProgress();
+}
+
+// ────────────────────────────────────────────────
+// 6. 엔터키
+// ────────────────────────────────────────────────
+document.getElementById('userInput').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        if (document.getElementById('checkBtn').style.display !== 'none') {
+            checkAnswer();
+        } else {
+            nextQuiz();
+        }
+    }
+});
+
+// 시작!
+initQuiz();
+nextQuiz();
+</script>
+</body>
+</html>
